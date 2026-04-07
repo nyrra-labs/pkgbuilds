@@ -68,7 +68,7 @@ For `nyrra-foundry-cli-bin` and `nyrra-signals-bin`, `gh auth login` must be con
 
 1. Create the GitHub repository and enable Actions.
 2. In `Settings -> Actions -> General`, set workflow permissions to read and write, and enable GitHub Actions to create pull requests.
-3. Attach the org-level `NYRRA_GH_TOKEN` secret to the repos that should bump `nyrra-signals-bin`.
+3. Attach the org-level `NYRRA_GH_TOKEN` secret to the repos that should bump the private NYRRA packages.
 4. When the AUR repos exist, add `AUR_USERNAME`, `AUR_EMAIL`, and `AUR_SSH_PRIVATE_KEY`.
 5. Run `version-bumps` manually once, confirm the PR output, then merge.
 6. After the first merge, `publish.yml` will start pushing package updates to AUR only if those AUR secrets are present.
