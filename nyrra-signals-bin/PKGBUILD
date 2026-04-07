@@ -1,0 +1,36 @@
+# Maintainer: Anand Pant
+
+pkgname=nyrra-signals-bin
+pkgver=0.0.6
+pkgrel=1
+pkgdesc="Signal exploration TUI"
+arch=('x86_64')
+url="https://github.com/nyrra-labs/nyrra-signals"
+makedepends=('github-cli')
+provides=('nyrra-signals')
+conflicts=('nyrra-signals')
+
+# Public PKGBUILD, private release asset. Users need GitHub access to the org.
+_release_asset='artifact'
+_asset="nyrra-signals_v${pkgver}_linux_amd64.tar.gz"
+_sha256='39e137f7153f76ba64935cb4f7be22f43d5c153e981baeb4d977a72315d1e0e5'
+
+prepare() {
+  gh release download "v${pkgver}" \
+    --repo nyrra-labs/nyrra-signals \
+    --pattern "${_release_asset}" \
+    --dir . --clobber
+
+  echo "${_sha256}  ${_release_asset}" | sha256sum -c
+
+  if [[ "${_release_asset}" != "${_asset}" ]]; then
+    bsdtar -xf "${_release_asset}"
+  fi
+
+  tar xzf "${_asset}"
+}
+
+package() {
+  install -Dm755 "nyrra-signals_v${pkgver}_linux_amd64/nyrra-signals" \
+    "${pkgdir}/usr/bin/nyrra-signals"
+}

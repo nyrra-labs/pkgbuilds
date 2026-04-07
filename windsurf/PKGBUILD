@@ -1,0 +1,64 @@
+# Maintainer: Anand Pant
+
+pkgname=windsurf
+pkgver=1.9600.40
+pkgrel=1
+pkgdesc="The Windsurf Editor"
+arch=('x86_64')
+url="https://windsurf.com/"
+license=('LicenseRef-Windsurf-Editor')
+depends=(
+  'alsa-lib'
+  'dbus'
+  'gcc-libs'
+  'glib2'
+  'glibc'
+  'gtk3'
+  'libnotify'
+  'libsecret'
+  'libx11'
+  'libxkbfile'
+  'libxss'
+  'nss'
+  'xdg-utils'
+)
+optdepends=(
+  'org.freedesktop.secrets: Sync settings'
+)
+options=('!strip')
+_source_url="https://windsurf-stable.codeiumdata.com/linux-x64/stable/33797ef35c395e31fc2c9c35d2509de83c01fd7c/Windsurf-linux-x64-1.9600.40.tar.gz"
+source=(
+  "${pkgname}-${pkgver}.tar.gz::${_source_url}"
+)
+sha256sums=(
+  '31f0175e8f36297ad615c293c9d9c49ad5fb7cb818f49b470b7d71cdea2657c5'
+)
+
+package() {
+  install -dm755 "${pkgdir}/usr/share/windsurf"
+  cp -a Windsurf/. "${pkgdir}/usr/share/windsurf/"
+
+  install -dm755 "${pkgdir}/usr/bin"
+  ln -s /usr/share/windsurf/bin/windsurf "${pkgdir}/usr/bin/windsurf"
+
+  install -Dm644 "Windsurf/resources/app/resources/linux/code.png" \
+    "${pkgdir}/usr/share/icons/hicolor/512x512/apps/${pkgname}.png"
+  install -Dm644 "Windsurf/LICENSES.chromium.html" \
+    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSES.chromium.html"
+  install -Dm644 "Windsurf/resources/app/LICENSE.txt" \
+    "${pkgdir}/usr/share/licenses/${pkgname}/LICENSE.txt"
+
+  install -Dm644 /dev/stdin "${pkgdir}/usr/share/applications/${pkgname}.desktop" <<'EOF'
+[Desktop Entry]
+Name=Windsurf
+Comment=The Windsurf Editor
+Exec=windsurf %F
+Icon=windsurf
+Type=Application
+Terminal=false
+Categories=Development;IDE;TextEditor;
+MimeType=text/plain;inode/directory;
+StartupNotify=true
+StartupWMClass=Windsurf
+EOF
+}

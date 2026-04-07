@@ -1,0 +1,26 @@
+pkgbase = windsurf
+	pkgdesc = The Windsurf Editor
+	pkgver = 1.9600.40
+	pkgrel = 1
+	url = https://windsurf.com/
+	arch = x86_64
+	license = LicenseRef-Windsurf-Editor
+	depends = alsa-lib
+	depends = dbus
+	depends = gcc-libs
+	depends = glib2
+	depends = glibc
+	depends = gtk3
+	depends = libnotify
+	depends = libsecret
+	depends = libx11
+	depends = libxkbfile
+	depends = libxss
+	depends = nss
+	depends = xdg-utils
+	optdepends = org.freedesktop.secrets: Sync settings
+	options = !strip
+	source = windsurf-1.9600.40.tar.gz::https://windsurf-stable.codeiumdata.com/linux-x64/stable/33797ef35c395e31fc2c9c35d2509de83c01fd7c/Windsurf-linux-x64-1.9600.40.tar.gz
+	sha256sums = 31f0175e8f36297ad615c293c9d9c49ad5fb7cb818f49b470b7d71cdea2657c5
+
+pkgname = windsurf
