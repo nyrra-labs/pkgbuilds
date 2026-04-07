@@ -33,7 +33,7 @@ fi
 pkgver="$(jq -r '.tag_name | ltrimstr("v")' <<<"${release_json}")"
 asset_json="$(jq -c '
   .assets
-  | map(select((.name == "artifact") or (.name | test("\\.(zip|tgz|tar\\.gz)$"))))
+  | map(select((.name == "artifact") or (.name | test("_linux_amd64\\.tar\\.gz$"))))
   | first
 ' <<<"${release_json}")"
 release_asset="$(jq -r '.name // empty' <<<"${asset_json}")"
