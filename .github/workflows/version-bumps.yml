@@ -51,7 +51,7 @@ jobs:
         if: ${{ steps.detect.outputs.changed == 'true' }}
         run: |
           git checkout -B "${UPDATE_BRANCH}"
-          git add README.md docs scripts .github/workflows nyrra-signals-bin windsurf
+          git add README.md docs scripts .github/workflows nyrra-foundry-cli-bin nyrra-signals-bin windsurf
           git commit -m "chore(pkgbuilds): bump package versions"
           git push --force --set-upstream origin "${UPDATE_BRANCH}"
 
