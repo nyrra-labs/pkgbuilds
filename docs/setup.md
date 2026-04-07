@@ -10,14 +10,14 @@ Use this first.
    - set workflow permissions to `Read and write`
    - enable `Allow GitHub Actions to create and approve pull requests`
 4. Do not add any AUR secrets yet.
-5. Optionally attach `NYRRA_GH_TOKEN` if you want Actions to bump the private `nyrra-signals-bin` package too.
+5. Optionally attach `NYRRA_GH_TOKEN` if you want Actions to bump the private NYRRA packages too.
 6. Run the `version-bumps` workflow manually.
 
 Result:
 
 - branch and PR creation use the repo `GITHUB_TOKEN`
 - `windsurf` can update automatically
-- `nyrra-signals-bin` updates only if the repo has access to `NYRRA_GH_TOKEN`
+- `nyrra-foundry-cli-bin` and `nyrra-signals-bin` update only if the repo has access to `NYRRA_GH_TOKEN`
 - AUR publishing is skipped without failing
 
 ## Org-Level Secret
@@ -81,7 +81,7 @@ When you are ready to publish:
 ## Token Model
 
 - Same-repo automation uses the built-in `GITHUB_TOKEN`.
-- Cross-repo private release access for `nyrra-signals-bin` needs a separate credential in Actions, because the workflow token is scoped to the repository that contains the workflow.
+- Cross-repo private release access for `nyrra-foundry-cli-bin` and `nyrra-signals-bin` needs a separate credential in Actions, because the workflow token is scoped to the repository that contains the workflow.
 - Local runs can use your normal `gh auth login` session instead of any exported token.
 - The current org secret value was created from your active `gh auth login` token. That works, but it is broader than ideal because it inherits that token's scopes.
 
