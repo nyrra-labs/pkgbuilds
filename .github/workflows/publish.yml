@@ -42,7 +42,8 @@ jobs:
             exit 0
           fi
 
-          json="$(printf '%s\n' "${packages[@]}" | jq -R . | jq -s -c .)"
+          # Packages maintained externally on AUR — skip publishing.
+          json="$(printf '%s\n' "${packages[@]}" | grep -vxF 'windsurf' | jq -R . | jq -s -c .)"
           echo "packages=${json}" >> "${GITHUB_OUTPUT}"
 
   publish:
