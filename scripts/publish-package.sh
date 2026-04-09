@@ -27,14 +27,15 @@ rsync -a --delete \
 (
   cd "${workdir}/${package_name}"
 
-  if git diff --quiet; then
+  git config user.name "${AUR_USERNAME}"
+  git config user.email "${AUR_EMAIL}"
+  git add PKGBUILD .SRCINFO
+
+  if git diff --cached --quiet; then
     echo "No AUR changes for ${package_name}"
     exit 0
   fi
 
-  git config user.name "${AUR_USERNAME}"
-  git config user.email "${AUR_EMAIL}"
-  git add PKGBUILD .SRCINFO
   git commit -m "Update ${package_name}"
   git push origin HEAD
 )
