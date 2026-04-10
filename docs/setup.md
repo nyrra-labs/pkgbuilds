@@ -19,6 +19,7 @@ Result:
 - `windsurf` can update automatically
 - `nyrra-foundry-cli-bin` and `nyrra-signals-bin` update only if the repo has access to `NYRRA_GH_TOKEN`
 - AUR publishing is skipped without failing
+- upstream `nyrra-signals` and `nyrra-foundry-cli` release workflows can also trigger this workflow automatically with `gh workflow run version-bumps.yml`, but that depends on `NYRRA_WORKFLOW_DISPATCH_TOKEN` being configured in those producer repos
 
 ## Org-Level Secret
 
