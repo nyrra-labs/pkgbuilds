@@ -19,17 +19,21 @@ workdir="$(mktemp -d)"
 trap 'rm -rf "${workdir}"' EXIT
 
 git clone "ssh://aur@aur.archlinux.org/${package_name}.git" "${workdir}/${package_name}"
-rsync -a --delete \
-  "${repo_root}/${package_dir}/PKGBUILD" \
-  "${repo_root}/${package_dir}/.SRCINFO" \
-  "${workdir}/${package_name}/"
+
+find "${workdir}/${package_name}" -mindepth 1 -maxdepth 1 ! -name '.git' -exec rm -rf {} +
+
+while IFS= read -r tracked_file; do
+  relative_path="${tracked_file#${package_dir}/}"
+  install -d "${workdir}/${package_name}/$(dirname "${relative_path}")"
+  cp -a "${repo_root}/${tracked_file}" "${workdir}/${package_name}/${relative_path}"
+done < <(git -C "${repo_root}" ls-files -- "${package_dir}")
 
 (
   cd "${workdir}/${package_name}"
 
   git config user.name "${AUR_USERNAME}"
   git config user.email "${AUR_EMAIL}"
-  git add PKGBUILD .SRCINFO
+  git add -A
 
   if git diff --cached --quiet; then
     echo "No AUR changes for ${package_name}"

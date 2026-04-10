@@ -65,6 +65,13 @@ If you are logged into GitHub locally with `gh auth login`, you can run:
 
 That uses your local GitHub CLI session for private release access.
 
+## Package-Manager Install Behavior
+
+The AUR packages intentionally do less shell mutation than the upstream installers:
+
+- `nyrra-foundry-cli-bin` installs `/usr/bin/nyrra-foundry-cli`, but it does not create a global `/usr/bin/npc` binary because that name is already taken elsewhere on Arch. The package prints the exact shell snippet to add `alias npc=nyrra-foundry-cli` plus completion setup in `post_install`.
+- `nyrra-signals-bin` installs `/usr/bin/nyrra-signals`, but it does not auto-open the first-run UI. Run `nyrra-signals setup` from a real terminal after install.
+
 ## Full Publish Setup
 
 When you are ready to publish:
