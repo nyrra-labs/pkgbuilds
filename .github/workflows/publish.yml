@@ -8,6 +8,7 @@ on:
     paths:
       - '*/PKGBUILD'
       - '*/.SRCINFO'
+      - '*/*.install'
 
 jobs:
   detect:
@@ -32,7 +33,7 @@ jobs:
           fi
 
           mapfile -t packages < <(
-            git diff --name-only "${before}" "${GITHUB_SHA}" -- '*/PKGBUILD' '*/.SRCINFO' \
+            git diff --name-only "${before}" "${GITHUB_SHA}" -- '*/PKGBUILD' '*/.SRCINFO' '*/*.install' \
               | xargs -r -n1 dirname \
               | sort -u
           )

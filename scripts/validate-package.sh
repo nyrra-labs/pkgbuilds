@@ -12,6 +12,10 @@ trap 'rm -rf "${tmpdir}"' EXIT
 
 cp -a "${package_dir}" "${tmpdir}/pkg"
 bash -n "${package_dir}/PKGBUILD"
+for install_script in "${package_dir}"/*.install; do
+  [[ -f "${install_script}" ]] || continue
+  bash -n "${install_script}"
+done
 
 run_makepkg_validation() {
   if [[ "$(id -u)" -eq 0 ]]; then
