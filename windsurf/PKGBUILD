@@ -1,7 +1,7 @@
 # Maintainer: Anand Pant
 
 pkgname=windsurf
-pkgver=1.9600.41
+pkgver=2.0.61
 pkgrel=1
 pkgdesc="The Windsurf Editor"
 arch=('x86_64')
@@ -26,12 +26,12 @@ optdepends=(
   'org.freedesktop.secrets: Sync settings'
 )
 options=('!strip')
-_source_url="https://windsurf-stable.codeiumdata.com/linux-x64/stable/f90ca8311d630b9b77e7537222ecfce0a0ac990b/Windsurf-linux-x64-1.9600.41.tar.gz"
+_source_url="https://windsurf-stable.codeiumdata.com/linux-x64/stable/abcd9c8664da5af505557f3b327b5537400635f2/Windsurf-linux-x64-2.0.61.tar.gz"
 source=(
   "${pkgname}-${pkgver}.tar.gz::${_source_url}"
 )
 sha256sums=(
-  'b8c9e9dad0bc51e40e393f5a16e8c20cedefcd91d0bd879c15200039f0933962'
+  '1dfa6477e573cc26447688e2ffbb1b9b03ac7fe016ae65c8d025c6f712eba28a'
 )
 
 package() {
