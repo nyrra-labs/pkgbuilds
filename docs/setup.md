@@ -19,7 +19,13 @@ Result:
 - `windsurf` can update automatically
 - `nyrra-foundry-cli-bin` and `nyrra-signals-bin` update only if the repo has access to `NYRRA_GH_TOKEN`
 - AUR publishing is skipped without failing
-- upstream `nyrra-signals` and `nyrra-foundry-cli` release workflows can also trigger this workflow automatically with `gh workflow run version-bumps.yml`, but that depends on `NYRRA_WORKFLOW_DISPATCH_TOKEN` being configured in those producer repos
+- upstream `nyrra-signals` and `nyrra-foundry-cli` release workflows can also trigger this workflow automatically with `gh workflow run version-bumps.yml`, but that depends on `NYRRA_WORKFLOW_DISPATCH_TOKEN` being configured as a Depot CI secret in those producer repos
+
+## GitHub UI Links
+
+- create PAT: <https://github.com/settings/personal-access-tokens>
+- review active org PATs: <https://github.com/organizations/nyrra-labs/settings/personal-access-tokens/active>
+- manage org Actions secrets: <https://github.com/organizations/nyrra-labs/settings/secrets/actions>
 
 ## Org-Level Secret
 
@@ -54,6 +60,35 @@ gh secret set NYRRA_GH_TOKEN \
 ```
 
 If you later want to remove repo access without changing the secret value, rerun the same command with the smaller repo list.
+
+## NYRRA_WORKFLOW_DISPATCH_TOKEN
+
+Create a fine-grained PAT that can trigger workflow dispatches in:
+
+- `nyrra-labs/homebrew-tap`
+- `nyrra-labs/pkgbuilds`
+
+Store that PAT as the GitHub org secret `NYRRA_WORKFLOW_DISPATCH_TOKEN` with `selected` visibility for these producer repos:
+
+- `nyrra-labs/nyrra-foundry-cli`
+- `nyrra-labs/nyrra-signals`
+
+Those producer release workflows run in Depot CI, so GitHub org secrets are not enough on their own. Mirror the same secret into Depot for each producer repo with one of these paths:
+
+```bash
+cd /home/anandpant/Development/nyrra/nyrra-foundry-cli
+depot ci migrate secrets-and-vars -y
+
+cd /home/anandpant/Development/nyrra/nyrra-signals
+depot ci migrate secrets-and-vars -y
+```
+
+Or add the Depot secrets directly:
+
+```bash
+depot ci secrets add NYRRA_WORKFLOW_DISPATCH_TOKEN --repo nyrra-labs/nyrra-foundry-cli
+depot ci secrets add NYRRA_WORKFLOW_DISPATCH_TOKEN --repo nyrra-labs/nyrra-signals
+```
 
 ## Local Operator Flow
 

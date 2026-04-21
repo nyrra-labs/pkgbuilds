@@ -18,6 +18,23 @@ repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 pkgbuild="${repo_root}/nyrra-foundry-cli-bin/PKGBUILD"
 repo="nyrra-labs/nyrra-foundry-cli"
 
+verify_release_archive() {
+  local archive="$1"
+  local listing
+
+  listing="$(tar -tzf "${archive}")"
+
+  grep -Fxq "nyrra-foundry-cli" <<<"${listing}"
+  grep -Fxq "LICENSE" <<<"${listing}"
+  grep -Fxq "NOTICE" <<<"${listing}"
+  grep -Fxq "README.md" <<<"${listing}"
+
+  if ! grep -Eq '^templates/(compute-module-ts|compute-modules/typescript)/package\.json$' <<<"${listing}"; then
+    echo "Release archive ${archive} is missing a recognized compute module template package.json." >&2
+    exit 1
+  fi
+}
+
 if [[ -n "${NYRRA_GH_TOKEN:-}" ]]; then
   release_json="$(GH_TOKEN="${NYRRA_GH_TOKEN}" gh api "repos/${repo}/releases/latest")"
 elif [[ -n "${GITHUB_ACTIONS:-}" ]]; then
@@ -72,12 +89,7 @@ fi
 (
   cd "${tmpdir}"
   echo "${sha256}  ${asset_name}" | sha256sum -c
-  tar -tzf "${asset_name}" \
-    nyrra-foundry-cli \
-    LICENSE \
-    NOTICE \
-    README.md \
-    templates/compute-module-ts/package.json >/dev/null
+  verify_release_archive "${asset_name}"
 )
 
 perl -0pi -e "s/^pkgver=.*/pkgver=${pkgver}/m" "${pkgbuild}"
