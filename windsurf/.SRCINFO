@@ -1,6 +1,6 @@
 pkgbase = windsurf
 	pkgdesc = The Windsurf Editor
-	pkgver = 2.0.61
+	pkgver = 2.1.32
 	pkgrel = 1
 	url = https://windsurf.com/
 	arch = x86_64
@@ -20,7 +20,7 @@ pkgbase = windsurf
 	depends = xdg-utils
 	optdepends = org.freedesktop.secrets: Sync settings
 	options = !strip
-	source = windsurf-2.0.61.tar.gz::https://windsurf-stable.codeiumdata.com/linux-x64/stable/abcd9c8664da5af505557f3b327b5537400635f2/Windsurf-linux-x64-2.0.61.tar.gz
-	sha256sums = 1dfa6477e573cc26447688e2ffbb1b9b03ac7fe016ae65c8d025c6f712eba28a
+	source = windsurf-2.1.32.tar.gz::https://windsurf-stable.codeiumdata.com/linux-x64/stable/63e54ba26dd2a1b975c172966dff80bad8ae74c7/Windsurf-linux-x64-2.1.32.tar.gz
+	sha256sums = b2b8d1644f8684feaa21326d93829f79319381c439fd88663ee570966954d626
 
 pkgname = windsurf
