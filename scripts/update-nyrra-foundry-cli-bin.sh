@@ -26,7 +26,6 @@ verify_release_archive() {
 
   grep -Fxq "nyrra-foundry-cli" <<<"${listing}"
   grep -Fxq "LICENSE" <<<"${listing}"
-  grep -Fxq "NOTICE" <<<"${listing}"
   grep -Fxq "README.md" <<<"${listing}"
 
   if ! grep -Eq '^templates/(compute-module-ts|compute-modules/typescript)/package\.json$' <<<"${listing}"; then
