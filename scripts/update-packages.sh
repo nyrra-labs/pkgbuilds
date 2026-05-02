@@ -9,6 +9,7 @@ fi
 
 if [[ "$1" == "auto" ]]; then
   packages=(
+    scryu-bin
     windsurf
   )
   if [[ -n "${NYRRA_GH_TOKEN:-}" || -z "${GITHUB_ACTIONS:-}" ]]; then
@@ -19,6 +20,7 @@ elif [[ "$1" == "all" ]]; then
   packages=(
     nyrra-foundry-cli-bin
     nyrra-signals-bin
+    scryu-bin
     windsurf
   )
 else
@@ -39,6 +41,13 @@ for package in "${packages[@]}"; do
         "${repo_root}/scripts/update-nyrra-signals-bin.sh" --optional
       else
         "${repo_root}/scripts/update-nyrra-signals-bin.sh"
+      fi
+      ;;
+    scryu-bin)
+      if [[ "$1" == "auto" ]]; then
+        "${repo_root}/scripts/update-scryu-bin.sh" --optional
+      else
+        "${repo_root}/scripts/update-scryu-bin.sh"
       fi
       ;;
     windsurf)

@@ -8,6 +8,7 @@ Arch Linux package definitions for NYRRA-maintained software and a small set of 
 |---|---|---|
 | `nyrra-foundry-cli-bin` | `nyrra-labs/nyrra-foundry-cli` GitHub Releases | Private release assets. Package installs bundled templates and patches the missing template-root sentinel file from the current release archive. |
 | `nyrra-signals-bin` | `nyrra-labs/nyrra-signals` GitHub Releases | The PKGBUILD is public, but installation requires GitHub access to the private release artifacts. |
+| `scryu-bin` | `install.scryu.com` public release assets | Public linux amd64 release asset from SCRYU's R2-backed installer metadata. Generated after the first SCRYU release publishes `latest.json`. |
 | `windsurf` | Windsurf Linux stable tarball API | Updated from the upstream version API and packaged from the published Linux tarball. |
 
 ## Automation
@@ -37,13 +38,13 @@ cd <package-dir>
 makepkg -si
 ```
 
-For `nyrra-foundry-cli-bin` and `nyrra-signals-bin`, `gh auth login` must be configured with access to the `nyrra-labs` org before `makepkg` can download the private release assets.
+For `nyrra-foundry-cli-bin` and `nyrra-signals-bin`, `gh auth login` must be configured with access to the `nyrra-labs` org before `makepkg` can download the private release assets. `scryu-bin` uses public release assets and does not require GitHub auth.
 
 ## Temporary Mode
 
 - You can use this repo immediately without creating the AUR repository or AUR secrets.
 - The scheduled/manual bump workflow uses the repository `GITHUB_TOKEN` for branch and PR operations in this repo.
-- Without `NYRRA_GH_TOKEN`, the workflow skips `nyrra-foundry-cli-bin` and `nyrra-signals-bin` and still updates `windsurf`.
+- Without `NYRRA_GH_TOKEN`, the workflow skips `nyrra-foundry-cli-bin` and `nyrra-signals-bin` and still updates public packages such as `scryu-bin` and `windsurf`.
 - Without AUR secrets, the publish workflow exits successfully without pushing anywhere.
 - `NYRRA_GH_TOKEN` now exists as an org-level secret in `nyrra-labs`, but it must be attached to each repo that should read the private release.
 
