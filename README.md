@@ -6,7 +6,8 @@ Arch Linux package definitions for NYRRA-maintained software and a small set of 
 
 | Package | Upstream | Notes |
 |---|---|---|
-| `nyrra-foundry-cli-bin` | `nyrra-labs/nyrra-foundry-cli` GitHub Releases | Private release assets. Package installs bundled templates and patches the missing template-root sentinel file from the current release archive. |
+| `foundry-cli-bin` | `nyrra-labs/nyrra-foundry-cli` GitHub Releases | New Foundry CLI package for the renamed `foundry-cli` binary. Private release assets. Package installs bundled templates and patches the template-root sentinel file when needed. |
+| `nyrra-foundry-cli-bin` | `nyrra-labs/nyrra-foundry-cli` GitHub Releases | Legacy package kept for the pre-rename binary. It continues to use legacy `nyrra-foundry-cli_*` release archives and is not deprecated in this slice. |
 | `nyrra-signals-bin` | `nyrra-labs/nyrra-signals` GitHub Releases | The PKGBUILD is public, but installation requires GitHub access to the private release artifacts. |
 | `scryu-bin` | `install.scryu.com` public release assets | Public linux amd64 release asset from SCRYU's R2-backed installer metadata. Generated after the first SCRYU release publishes `latest.json`. |
 | `windsurf` | Windsurf Linux stable tarball API | Updated from the upstream version API and packaged from the published Linux tarball. |
@@ -38,7 +39,7 @@ cd <package-dir>
 makepkg -si
 ```
 
-For `nyrra-foundry-cli-bin` and `nyrra-signals-bin`, `gh auth login` must be configured with access to the `nyrra-labs` org before `makepkg` can download the private release assets. `scryu-bin` uses public release assets and does not require GitHub auth.
+For `foundry-cli-bin`, `nyrra-foundry-cli-bin`, and `nyrra-signals-bin`, `gh auth login` must be configured with access to the `nyrra-labs` org before `makepkg` can download the private release assets. `scryu-bin` uses public release assets and does not require GitHub auth.
 
 ## Temporary Mode
 

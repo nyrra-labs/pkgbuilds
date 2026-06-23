@@ -17,6 +17,8 @@ fi
 repo_root="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")/.." && pwd)"
 pkgbuild="${repo_root}/nyrra-foundry-cli-bin/PKGBUILD"
 repo="nyrra-labs/nyrra-foundry-cli"
+asset_prefix="nyrra-foundry-cli"
+release_tag="${NYRRA_FOUNDRY_CLI_RELEASE_TAG:-}"
 
 verify_release_archive() {
   local archive="$1"
@@ -34,8 +36,33 @@ verify_release_archive() {
   fi
 }
 
-if [[ -n "${NYRRA_GH_TOKEN:-}" ]]; then
-  release_json="$(GH_TOKEN="${NYRRA_GH_TOKEN}" gh api "repos/${repo}/releases/latest")"
+fetch_release_by_tag() {
+  local tag="$1"
+
+  if [[ -n "${NYRRA_GH_TOKEN:-}" ]]; then
+    GH_TOKEN="${NYRRA_GH_TOKEN}" gh api "repos/${repo}/releases/tags/${tag}"
+  else
+    gh api "repos/${repo}/releases/tags/${tag}"
+  fi
+}
+
+fetch_latest_stable_release_with_assets() {
+  if [[ -n "${NYRRA_GH_TOKEN:-}" ]]; then
+    GH_TOKEN="${NYRRA_GH_TOKEN}" gh api --paginate "repos/${repo}/releases"
+  else
+    gh api --paginate "repos/${repo}/releases"
+  fi | jq -s -c --arg asset_prefix "${asset_prefix}" '
+    add
+    | map(select((.draft | not) and (.prerelease | not)))
+    | map(select(any(.assets[]?; (.name | test("^" + $asset_prefix + "_.*_linux_amd64\\.tar\\.gz$")))))
+    | first // empty
+  '
+}
+
+if [[ -n "${release_tag}" ]]; then
+  release_json="$(fetch_release_by_tag "${release_tag}")"
+elif [[ -n "${NYRRA_GH_TOKEN:-}" || -z "${GITHUB_ACTIONS:-}" ]]; then
+  release_json="$(fetch_latest_stable_release_with_assets)"
 elif [[ -n "${GITHUB_ACTIONS:-}" ]]; then
   if [[ "${optional}" == "true" ]]; then
     echo "Skipping nyrra-foundry-cli-bin: NYRRA_GH_TOKEN is not configured in GitHub Actions." >&2
@@ -43,14 +70,21 @@ elif [[ -n "${GITHUB_ACTIONS:-}" ]]; then
   fi
   echo "NYRRA_GH_TOKEN is required in GitHub Actions to read the private nyrra-foundry-cli release." >&2
   exit 1
-else
-  release_json="$(gh api "repos/${repo}/releases/latest")"
+fi
+
+if [[ -z "${release_json}" || "${release_json}" == "null" ]]; then
+  if [[ "${optional}" == "true" ]]; then
+    echo "Skipping nyrra-foundry-cli-bin: no stable release contains legacy linux amd64 archives." >&2
+    exit 0
+  fi
+  echo "nyrra-foundry-cli has no stable release with legacy linux amd64 archives" >&2
+  exit 1
 fi
 
 pkgver="$(jq -r '.tag_name | ltrimstr("v")' <<<"${release_json}")"
-asset_json="$(jq -c '
+asset_json="$(jq -c --arg asset_prefix "${asset_prefix}" '
   .assets
-  | map(select(.name | test("_linux_amd64\\.tar\\.gz$")))
+  | map(select(.name | test("^" + $asset_prefix + "_.*_linux_amd64\\.tar\\.gz$")))
   | first
 ' <<<"${release_json}")"
 asset_name="$(jq -r '.name // empty' <<<"${asset_json}")"

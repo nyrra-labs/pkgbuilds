@@ -17,7 +17,7 @@ Result:
 
 - branch and PR creation use the repo `GITHUB_TOKEN`
 - `windsurf` can update automatically
-- `nyrra-foundry-cli-bin` and `nyrra-signals-bin` update only if the repo has access to `NYRRA_GH_TOKEN`
+- `foundry-cli-bin`, `nyrra-foundry-cli-bin`, and `nyrra-signals-bin` update only if the repo has access to `NYRRA_GH_TOKEN`
 - AUR publishing is skipped without failing
 - upstream `nyrra-signals` and `nyrra-foundry-cli` release workflows can also trigger this workflow automatically with `gh workflow run version-bumps.yml`, but that depends on `NYRRA_WORKFLOW_DISPATCH_TOKEN` being configured as a Depot CI secret in those producer repos
 
@@ -106,6 +106,7 @@ That uses your local GitHub CLI session for private release access.
 The AUR packages intentionally do less shell mutation than the upstream installers:
 
 - `nyrra-foundry-cli-bin` installs `/usr/bin/nyrra-foundry-cli`, but it does not create a global `/usr/bin/npc` binary because that name is already taken elsewhere on Arch. The package prints the exact shell snippet to add `alias npc=nyrra-foundry-cli` plus completion setup in `post_install`.
+- `foundry-cli-bin` installs `/usr/bin/foundry-cli` and prints completion setup snippets only.
 - `nyrra-signals-bin` installs `/usr/bin/nyrra-signals`, but it does not auto-open the first-run UI. Run `nyrra-signals setup` from a real terminal after install.
 
 ## Full Publish Setup
