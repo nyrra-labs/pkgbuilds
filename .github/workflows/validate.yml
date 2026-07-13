@@ -28,5 +28,7 @@ jobs:
       - name: Mark workspace as safe
         run: git config --global --add safe.directory "${GITHUB_WORKSPACE}"
 
-      - name: Validate packages
-        run: ./scripts/validate-packages.sh
+      - name: Validate packages and publish routing
+        run: |
+          ./scripts/validate-packages.sh
+          ./scripts/test-publish-routing.sh

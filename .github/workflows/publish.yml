@@ -43,8 +43,13 @@ jobs:
             exit 0
           fi
 
-          # Packages maintained externally on AUR — skip publishing.
-          json="$(printf '%s\n' "${packages[@]}" | { grep -vxF 'windsurf' || true; } | jq -R . | jq -s -c .)"
+          # Ignore removed packages and packages maintained externally on AUR.
+          json="$(
+            printf '%s\n' "${packages[@]}" \
+              | ./scripts/filter-publish-packages.sh \
+              | jq -R . \
+              | jq -s -c .
+          )"
           echo "packages=${json}" >> "${GITHUB_OUTPUT}"
 
   publish:
